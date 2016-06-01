@@ -1,0 +1,12 @@
+{
+  "name": "copier",
+  "version": "0.0.1",
+  "dependencies": {
+    "mongoose": "latest",
+    "restify": "latest",
+    "mongoose-auto-increment": "latest"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.9.0"
+  }
+}
