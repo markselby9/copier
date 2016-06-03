@@ -3,7 +3,7 @@
  */
 var URL = "http://localhost:8080/record";
 
-var RecordForm = React.createClass({
+var SaveRecordForm = React.createClass({
   getInitialState: function () {
     return {
       input: ''
@@ -11,22 +11,43 @@ var RecordForm = React.createClass({
   },
   handleSubmit: function (e) {
     e.preventDefault();
-    var input = this.refs.input.value.trim();
-    if (!input) {
-      alert ("Please don't submit empty input!");
+    var inputRecord = this.refs.inputRecord.value.trim();
+    if (!inputRecord) {
+      alert("Please don't submit empty input!");
       return;
     }
-    this.props.onInputSubmit({input: input});
-    this.refs.input.value = '';
+    this.props.onInputSubmit({input: inputRecord});
+    this.refs.inputRecord.value = '';
   },
   render: function () {
     return (
-      <form className="recordForm" onSubmit={this.handleSubmit}>
-        <p>Your record or record number is: </p>
-        <input type="text" placeholder="record / record number" ref="input"/>
-        <input type="submit" value="Submit"/>
+      <form className="saveRecordForm" onSubmit={this.handleSubmit}>
+        <p>Paste your content here and get the short code: </p>
+        <input type="text" placeholder="record" ref="inputRecord"/>
+        <input type="submit" value="Get my code!"/>
       </form>
     );
+  }
+});
+
+var GetRecordForm = React.createClass({
+  handleSubmit: function (e) {
+    e.preventDefault();
+    var inputCode = this.refs.inputCode.value.trim();
+    if (!inputCode) {
+      alert("Don't submit empty code");
+    }
+    this.props.onInputSubmit({input: inputCode});
+    this.refs.inputCode.value = '';
+  },
+  render: function () {
+    return (
+      <form className="getRecordForm" onSubmit={this.handleSubmit}>
+        <p>Paste your short code here to get the content: </p>
+        <input type="text" placeholder="record number" ref="inputCode"/>
+        <input type="submit" value="Get my content!"/>
+      </form>
+    )
   }
 });
 
@@ -34,7 +55,8 @@ var ResultBox = React.createClass({
   render: function () {
     return (
       <div className="resultBox">
-        <p> result: {this.props.data}</p>
+        <p> data: {this.props.data.result}</p>
+        <p> status: {this.props.data.status}</p>
       </div>
     );
   }
@@ -43,10 +65,11 @@ var ResultBox = React.createClass({
 var AppBox = React.createClass({
   getInitialState: function () {
     return {
-      data: "wait"
+      result: "please input",
+      status: "wait"
     }
   },
-  handleFormSubmit: function (input) {
+  handleSaveRecordFormSubmit: function (input) {
     console.log(input);
     $.ajax({
       url: URL,
@@ -57,19 +80,37 @@ var AppBox = React.createClass({
       }),
       success: function (data) {
         console.log(data);
-        this.setState({data: "success"});
+        this.setState({result: data.result, status: "success"});
       }.bind(this),
       error: function (xhr, status, err) {
-        this.setState({data: "failure"});
+        this.setState({result: data.result, status: "failure"});
         console.error(URL, status, err.toString());
       }.bind(this)
     });
   },
+  handleGetRecordFormSubmit: function (input) {
+    console.log(input);
+    $.ajax(
+      {
+        url: URL+"/"+input.input,
+        dataType: 'json',
+        type: 'GET',
+        success: function(data){
+          console.log(data);
+          this.setState({result: data.result, status: "success"});
+        }.bind(this),
+        error: function(xhr, status, err){
+          this.setState({result: data.result, status: "failure"});
+          console.error(URL, status, err.toString());
+        }.bind(this)
+      });
+  },
   render: function () {
     return (
       <div className="appBox">
-        <RecordForm onInputSubmit={this.handleFormSubmit}/>
-        <ResultBox data={this.state.data}/>
+        <SaveRecordForm onInputSubmit={this.handleSaveRecordFormSubmit}/>
+        <GetRecordForm onInputSubmit={this.handleGetRecordFormSubmit}/>
+        <ResultBox data={this.state}/>
       </div>
     );
   }

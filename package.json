@@ -4,7 +4,8 @@
   "dependencies": {
     "mongoose": "latest",
     "restify": "latest",
-    "mongoose-auto-increment": "latest"
+    "mongoose-auto-increment": "latest",
+    "lodash": "latest"
   },
   "devDependencies": {
     "babel-cli": "^6.9.0"
