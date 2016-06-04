@@ -3,6 +3,8 @@
 var mongoose = require('mongoose');
 var autoIncrement = require('mongoose-auto-increment');
 var _ = require('lodash');
+var uuid = require('uuid');
+
 
 //mongodb
 var connection_string = 'mongodb://127.0.0.1:27017/test';
@@ -12,7 +14,8 @@ autoIncrement.initialize(db);
 var RecordSchema = new mongoose.Schema({
   record: String,
   date: Date,
-  seq: {type: Number, default: 0}
+  seq: {type: Number, default: 0},
+  someid: {type: String, default:uuid.v4},
 });
 RecordSchema.plugin(autoIncrement.plugin, {model: 'Record', field: 'recordId'});
 mongoose.model('Record', RecordSchema);
@@ -31,7 +34,8 @@ module.exports.createRecord = function (req, res, next) {
       res.send({'error': error});
     }
     console.log("saved");
-    res.send({'result': calculateShortCodeFromId(object.recordId), 'status': 'success'});
+    //res.send({'result': calculateShortCodeFromId(object.recordId), 'status': 'success'});
+    res.send({'result': object.someid, 'status': 'success'});
   });
   return next();
 };
@@ -51,8 +55,9 @@ module.exports.listRecord = function (req, res, next) {
 };
 
 module.exports.getRecord = function (req, res, next) {
-  var recordId = calculateIdFromShortCode(req.params.shortCode);
-  Record.find({recordId: recordId}, function (error, record) {
+  //var recordId = calculateIdFromShortCode(req.params.shortCode);
+  //Record.find({recordId: recordId}, function (error, record) {
+  Record.find({someid:req.params.shortCode}, function (error, record) {
     if (error) {
       console.log(error);
       return res.send(400);
@@ -66,9 +71,9 @@ module.exports.getRecord = function (req, res, next) {
 
 // calculate a short 4 character code from the auto-incrementing id
 function calculateShortCodeFromId(id) {
-  let hexString = id.toString(16);
+  var hexString = id.toString(16);
   if (hexString.length < 4) {
-    for (let i = 0; i < 4 - hexString.length; i++) {
+    for (var i = 0; i < 4 - hexString.length; i++) {
       hexString = String.fromCharCode(Math.floor(Math.random() * 10 + 103)) + hexString;
     }
   }
