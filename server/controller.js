@@ -15,7 +15,7 @@ var RecordSchema = new mongoose.Schema({
   record: String,
   date: Date,
   seq: {type: Number, default: 0},
-  someid: {type: String, default:uuid.v4},
+  someid: {type: String, default: uuid.v4}
 });
 RecordSchema.plugin(autoIncrement.plugin, {model: 'Record', field: 'recordId'});
 mongoose.model('Record', RecordSchema);
@@ -57,13 +57,13 @@ module.exports.listRecord = function (req, res, next) {
 module.exports.getRecord = function (req, res, next) {
   //var recordId = calculateIdFromShortCode(req.params.shortCode);
   //Record.find({recordId: recordId}, function (error, record) {
-  Record.find({someid:req.params.shortCode}, function (error, record) {
+  Record.find({someid: req.params.shortCode}, function (error, record) {
     if (error) {
       console.log(error);
       return res.send(400);
     } else {
       console.log(record);
-      return res.send({'result': record[0].record, 'status':'success'});
+      return res.send({'result': record[0].record, 'status': 'success'});
     }
   });
 };
@@ -80,6 +80,7 @@ function calculateShortCodeFromId(id) {
   return hexString;
 }
 
+// get id from the short code
 function calculateIdFromShortCode(code) {
   var i = 0;
   for (; i < code.length; i++) {

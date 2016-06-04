@@ -15,7 +15,7 @@ server.use(restify.queryParser());
 server.use(restify.CORS());
 
 server.listen(port, ip_addr, function () {
-  console.log("server started");
+  console.log("server started at port 8080");
 });
 
 

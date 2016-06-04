@@ -5,9 +5,13 @@
     "mongoose": "latest",
     "restify": "latest",
     "mongoose-auto-increment": "latest",
-    "lodash": "latest"
+    "lodash": "latest",
+    "nodemon": "latest"
   },
   "devDependencies": {
     "babel-cli": "^6.9.0"
+  },
+  "scripts": {
+    "start": "nodemon --watch server server/server.js"
   }
 }
