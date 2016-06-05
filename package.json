@@ -2,16 +2,24 @@
   "name": "copier",
   "version": "0.0.1",
   "dependencies": {
-    "mongoose": "latest",
-    "restify": "latest",
-    "mongoose-auto-increment": "latest",
     "lodash": "latest",
-    "nodemon": "latest"
+    "mongoose": "latest",
+    "mongoose-auto-increment": "latest",
+    "nodemon": "latest",
+    "react": "^15.1.0",
+    "react-dom": "^15.1.0",
+    "restify": "latest"
   },
   "devDependencies": {
-    "babel-cli": "^6.9.0"
+    "babel-cli": "^6.9.0",
+    "babel-loader": "^6.2.4",
+    "babel-preset-es2015": "^6.9.0",
+    "babel-preset-react": "^6.5.0",
+    "webpack": "^1.13.1"
   },
   "scripts": {
-    "start": "nodemon --watch server server/server.js"
+    "start": "nodemon --watch server server/server.js",
+    "dev": "webpack -d --watch",
+    "build": "webpack -p"
   }
 }
