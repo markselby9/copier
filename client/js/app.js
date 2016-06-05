@@ -83,8 +83,8 @@ var AppBox = React.createClass({
         this.setState({result: data.result, status: "success"});
       }.bind(this),
       error: function (xhr, status, err) {
-        this.setState({result: data.result, status: "failure"});
         console.error(URL, status, err.toString());
+        this.setState({result: "Item not saved.", status: "failure"});
       }.bind(this)
     });
   },
@@ -100,8 +100,8 @@ var AppBox = React.createClass({
           this.setState({result: data.result, status: "success"});
         }.bind(this),
         error: function(xhr, status, err){
-          this.setState({result: data.result, status: "failure"});
           console.error(URL, status, err.toString());
+          this.setState({result: "Item not found.", status: "failure"});
         }.bind(this)
       });
   },

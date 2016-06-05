@@ -11,6 +11,7 @@ var connection_string = 'mongodb://127.0.0.1:27017/test';
 var db = mongoose.connect(connection_string, ['test']);
 autoIncrement.initialize(db);
 
+// mongoose setup for "Record" model
 var RecordSchema = new mongoose.Schema({
   record: String,
   date: Date,
@@ -21,17 +22,20 @@ RecordSchema.plugin(autoIncrement.plugin, {model: 'Record', field: 'recordId'});
 mongoose.model('Record', RecordSchema);
 var Record = mongoose.model('Record');
 
+
+// save a record
 module.exports.createRecord = function (req, res, next) {
   var jsonBody = JSON.parse(req.body);
   var record = jsonBody.record;
   var recordObject = new Record({
     record: record,
-    date: new Date()
+    date: new Date(),
+    someid: generateRandomCode()
   });
   recordObject.save(function (error, object) {
     if (error) {
       console.error(error);
-      res.send({'error': error});
+      res.status(500).send({'result': "error", 'status': 'failure'});
     }
     console.log("saved");
     //res.send({'result': calculateShortCodeFromId(object.recordId), 'status': 'success'});
@@ -40,12 +44,12 @@ module.exports.createRecord = function (req, res, next) {
   return next();
 };
 
-
+// list all records
 module.exports.listRecord = function (req, res, next) {
   Record.find({}, function (error, result) {
     if (error) {
       console.log(error);
-      return res.send(400);
+      return res.status(500).send();
     } else {
       console.log(result);
       return res.send({'result': result});
@@ -54,40 +58,26 @@ module.exports.listRecord = function (req, res, next) {
   return next();
 };
 
+// get a record by id
 module.exports.getRecord = function (req, res, next) {
   //var recordId = calculateIdFromShortCode(req.params.shortCode);
   //Record.find({recordId: recordId}, function (error, record) {
   Record.find({someid: req.params.shortCode}, function (error, record) {
     if (error) {
       console.log(error);
-      return res.send(400);
+      res.status(500).send({'result': "error", 'status': 'failure'});
     } else {
-      console.log(record);
-      return res.send({'result': record[0].record, 'status': 'success'});
+      if (record.length>0){
+        console.log(record);
+        return res.send({'result': record[0].record, 'status': 'success'});
+      }else{
+        res.status(500).send({'result': "Item not found!", 'status': 'failure'});
+      }
     }
   });
 };
 
-
-// calculate a short 4 character code from the auto-incrementing id
-function calculateShortCodeFromId(id) {
-  var hexString = id.toString(16);
-  if (hexString.length < 4) {
-    for (var i = 0; i < 4 - hexString.length; i++) {
-      hexString = String.fromCharCode(Math.floor(Math.random() * 10 + 103)) + hexString;
-    }
-  }
-  return hexString;
-}
-
-// get id from the short code
-function calculateIdFromShortCode(code) {
-  var i = 0;
-  for (; i < code.length; i++) {
-    if (code[i].charCodeAt(0) < 103) {
-      break;
-    }
-  }
-  code = code.substr(i);
-  return _.parseInt(code, 16);
+function generateRandomCode(){
+  //TODO: generate a no-collision random 4-character length code
+  return uuid.v4();
 }
