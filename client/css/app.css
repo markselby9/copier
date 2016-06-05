@@ -1,3 +1,25 @@
-div{
-    margin:20px;
+.appBox {
+  background-color: #5bc0de;
+  padding: 10px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  border-radius: 10px;
+}
+@media (max-width: 960px) {
+  .appBox {
+    margin: 50px;
+  }
+}
+@media (min-width: 960px) {
+  .appBox {
+    width: 666px;
+  }
+}
+.appBox .resultBox {
+  margin-top: 50px;
+  font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
+  font-size: 18px;
 }

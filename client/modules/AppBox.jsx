@@ -7,6 +7,8 @@ import GetRecordForm from './GetRecordForm.jsx';
 import SaveRecordForm from './SaveRecordForm.jsx';
 import ResultBox from './ResultBox.jsx';
 
+import Panel from 'react-bootstrap/lib/Panel';
+
 class AppBox extends React.Component {
   constructor(props) {
     super(props);
@@ -60,11 +62,11 @@ class AppBox extends React.Component {
 
   render() {
     return (
-      <div className="appBox">
+      <Panel>
         <SaveRecordForm onInputSubmit={this.handleSaveRecordFormSubmit}/>
         <GetRecordForm onInputSubmit={this.handleGetRecordFormSubmit}/>
         <ResultBox data={this.state}/>
-      </div>
+      </Panel>
     );
   }
 
