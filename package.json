@@ -2,13 +2,15 @@
   "name": "copier",
   "version": "0.0.1",
   "dependencies": {
+    "collections": "^5.0.0",
     "lodash": "latest",
     "mongoose": "latest",
     "mongoose-auto-increment": "latest",
     "nodemon": "latest",
     "react": "^15.1.0",
     "react-dom": "^15.1.0",
-    "restify": "latest"
+    "restify": "latest",
+    "uuid": "^2.0.2"
   },
   "devDependencies": {
     "babel-cli": "^6.9.0",

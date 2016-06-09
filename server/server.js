@@ -21,9 +21,10 @@ server.listen(port, ip_addr, function () {
 
 var Controller = require('./controller');
 
-server.get('/record', Controller.listRecord);
+Controller.init().then(function(){
+    server.get('/record', Controller.listRecord);
+    server.get('/record/:shortCode', Controller.getRecord);
+    server.post('/record', Controller.createRecord);
+});
 
-server.get('/record/:shortCode', Controller.getRecord);
-
-server.post('/record', Controller.createRecord);
 
