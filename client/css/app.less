@@ -26,7 +26,8 @@
   background-color: @brand-info;
   padding: 10px;
   .center-block();
-  .border-radius(10px);
+
+  // app's width change with screen size
   @media (max-width: 960px) {
     margin: 50px;
   }
@@ -34,10 +35,22 @@
     width: 666px;
   }
 
+  .getRecordForm{
+    margin: 20px 0;
+  }
+
+  .saveRecordForm{
+    margin: 20px 0;
+
+  }
   .resultBox{
     margin-top: 50px;
-    font-family:@font-family-monospace;
+    font-family:@font-family-serif;
     font-size:@font-size-large;
+  }
+
+  .buttonGroup{
+    margin-left:30px;
   }
 }
 

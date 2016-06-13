@@ -1,9 +1,11 @@
 import React from "react";
+import Button from "react-bootstrap/lib/Button";
+import * as Consts from "./Consts";
 
 class SaveRecordForm extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {input:''};
+    this.state = {input: ''};
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
@@ -15,15 +17,16 @@ class SaveRecordForm extends React.Component {
       return;
     }
     this.props.onInputSubmit({input: inputRecord});
-    this.refs.inputRecord.value = '';
+    // this.refs.inputRecord.value = '';
   }
-
+  
   render() {
     return (
       <form className="saveRecordForm" onSubmit={this.handleSubmit}>
         <p>Paste your content here and get the short code: </p>
         <input type="text" placeholder="record" ref="inputRecord"/>
-        <input type="submit" value="Get my code!"/>
+        <Button type="submit" bsStyle="primary" className="buttonGroup">Get my code</Button>
+
       </form>
     );
   }
