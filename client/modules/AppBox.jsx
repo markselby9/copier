@@ -7,6 +7,10 @@ import GetRecordForm from './GetRecordForm.jsx';
 import SaveRecordForm from './SaveRecordForm.jsx';
 import ResultBox from './ResultBox.jsx';
 
+import Panel from 'react-bootstrap/lib/Panel';
+import * as $ from "../js/jquery-2.2.4";
+import Consts from "./Consts"
+
 class AppBox extends React.Component {
   constructor(props) {
     super(props);
@@ -17,7 +21,7 @@ class AppBox extends React.Component {
     this.handleGetRecordFormSubmit = this.handleGetRecordFormSubmit.bind(this);
     this.handleSaveRecordFormSubmit = this.handleSaveRecordFormSubmit.bind(this);
 
-    this.URL = "http://localhost:8080/record";
+    this.URL = Consts.URL;
   }
 
   handleSaveRecordFormSubmit(input) {
@@ -60,11 +64,11 @@ class AppBox extends React.Component {
 
   render() {
     return (
-      <div className="appBox">
+      <Panel className="appBox">
         <SaveRecordForm onInputSubmit={this.handleSaveRecordFormSubmit}/>
         <GetRecordForm onInputSubmit={this.handleGetRecordFormSubmit}/>
         <ResultBox data={this.state}/>
-      </div>
+      </Panel>
     );
   }
 

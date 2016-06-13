@@ -8,6 +8,7 @@
     "mongoose-auto-increment": "latest",
     "nodemon": "latest",
     "react": "^15.1.0",
+    "react-bootstrap": "^0.29.4",
     "react-dom": "^15.1.0",
     "restify": "latest",
     "uuid": "^2.0.2"
@@ -20,7 +21,7 @@
     "webpack": "^1.13.1"
   },
   "scripts": {
-    "start": "nodemon --watch server server/server.js",
+    "start": "npm install; nodemon --watch server server/server.js",
     "dev": "webpack -d --watch",
     "build": "webpack -p"
   }

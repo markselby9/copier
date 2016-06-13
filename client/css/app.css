@@ -1,3 +1,31 @@
-div{
-    margin:20px;
+.appBox {
+  background-color: #5bc0de;
+  padding: 10px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+@media (max-width: 960px) {
+  .appBox {
+    margin: 50px;
+  }
+}
+@media (min-width: 960px) {
+  .appBox {
+    width: 666px;
+  }
+}
+.appBox .getRecordForm {
+  margin: 20px 0;
+}
+.appBox .saveRecordForm {
+  margin: 20px 0;
+}
+.appBox .resultBox {
+  margin-top: 50px;
+  font-family: Georgia, "Times New Roman", Times, serif;
+  font-size: 18px;
+}
+.appBox .buttonGroup {
+  margin-left: 30px;
 }
