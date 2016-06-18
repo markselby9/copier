@@ -10,8 +10,8 @@ var util = require('util');
 //mongodb
 var connection_string = 'mongodb://127.0.0.1:27017/test';
 var options = {};
-var db = mongoose.connect(connection_string, options, function(error){
-  if (error){
+var db = mongoose.connect(connection_string, options, function (error) {
+  if (error) {
     console.log(error);
     throw "mongodb connect failed, please check.";
   }
@@ -71,6 +71,11 @@ module.exports.getRecord = function (req, res, next) {
     }
   });
   return next();
+};
+
+module.exports.removeRecord = function (req, res, next) {
+  var shortCode = req.params.shortCode;
+  
 };
 
 

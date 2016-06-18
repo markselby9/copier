@@ -10,7 +10,7 @@ var server = restify.createServer({
   name: "copier-server"
 });
 
-server.use(restify.bodyParser({ mapParams: true }));
+server.use(restify.bodyParser({mapParams: true}));
 server.use(restify.queryParser());
 server.use(restify.CORS());
 
@@ -21,9 +21,10 @@ server.listen(port, ip_addr, function () {
 
 var Controller = require('./controller');
 
-Controller.init().then(function(){
-    server.get('/record/:shortCode', Controller.getRecord);
-    server.post('/record', Controller.createRecord);
+Controller.init().then(function () {
+  server.get('/record/:shortCode', Controller.getRecord);
+  server.get('/record/remove/:shortCode', Controller.removeRecord);
+  server.post('/record', Controller.createRecord);
 });
 
 

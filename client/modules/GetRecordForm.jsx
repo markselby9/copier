@@ -31,24 +31,26 @@ class GetRecordForm extends React.Component {
   removeCode() {
     var inputCode = this.state.record_code;
     if (!inputCode) {
-      alert("Don't submit empty record_code");
+      alert("Don't give me empty record_code to remove");
       return;
     }
     // this.refs.inputRecord.value = '';
     $.ajax({
-        url: Consts.URL,
+        url: Consts.URL+'/remove/'+inputCode,
         dataType: 'json',
-        type: 'POST',
-        data: JSON.stringify({
-          "remove-record": inputCode
-        }),
+        type: 'GET',
+        // data: JSON.stringify({
+        //   "remove-record": inputCode
+        // }),
         success: function (data) {
           console.log(data);
-          // this.setState({result: data.result, status: "Delete record success"});
+          this.props.onRemoveRecord({result:"todo", status:"success"});
+          // alert("Remove success!");
         }.bind(this),
         error: function (xhr, status, err) {
           console.error(URL, status, err.toString());
-          // this.setState({result: "Item not deleted.", status: "failure"});
+          // alert("Remove failed!");
+          this.props.onRemoveRecord({result:"todo", status:"failed"});
         }.bind(this)
       }
     )

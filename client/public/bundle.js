@@ -20866,7 +20866,7 @@
   \***********************************/
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';
+	"use strict";
 	
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
@@ -20929,13 +20929,14 @@
 	    };
 	    _this.handleGetRecordFormSubmit = _this.handleGetRecordFormSubmit.bind(_this);
 	    _this.handleSaveRecordFormSubmit = _this.handleSaveRecordFormSubmit.bind(_this);
+	    _this.onRemoveRecord = _this.onRemoveRecord.bind(_this);
 	
 	    _this.URL = _Consts2.default.URL;
 	    return _this;
 	  }
 	
 	  _createClass(AppBox, [{
-	    key: 'handleSaveRecordFormSubmit',
+	    key: "handleSaveRecordFormSubmit",
 	    value: function handleSaveRecordFormSubmit(input) {
 	      console.log(input);
 	      $.ajax({
@@ -20956,7 +20957,7 @@
 	      });
 	    }
 	  }, {
-	    key: 'handleGetRecordFormSubmit',
+	    key: "handleGetRecordFormSubmit",
 	    value: function handleGetRecordFormSubmit(input) {
 	      console.log(input);
 	      $.ajax({
@@ -20974,15 +20975,23 @@
 	      });
 	    }
 	  }, {
-	    key: 'render',
+	    key: "render",
 	    value: function render() {
 	      return _react2.default.createElement(
 	        _Panel2.default,
-	        { className: 'appBox' },
+	        { className: "appBox" },
 	        _react2.default.createElement(_SaveRecordForm2.default, { onInputSubmit: this.handleSaveRecordFormSubmit }),
-	        _react2.default.createElement(_GetRecordForm2.default, { onInputSubmit: this.handleGetRecordFormSubmit }),
+	        _react2.default.createElement(_GetRecordForm2.default, { onInputSubmit: this.handleGetRecordFormSubmit, onRemoveRecord: this.onRemoveRecord }),
 	        _react2.default.createElement(_ResultBox2.default, { data: this.state })
 	      );
+	    }
+	  }, {
+	    key: "onRemoveRecord",
+	    value: function onRemoveRecord(remove_result_obj) {
+	      this.setState({
+	        result: remove_result_obj.result,
+	        status: remove_result_obj.status
+	      });
 	    }
 	  }]);
 	
@@ -21069,24 +21078,26 @@
 	    value: function removeCode() {
 	      var inputCode = this.state.record_code;
 	      if (!inputCode) {
-	        alert("Don't submit empty record_code");
+	        alert("Don't give me empty record_code to remove");
 	        return;
 	      }
 	      // this.refs.inputRecord.value = '';
 	      $.ajax({
-	        url: Consts.URL,
+	        url: Consts.URL + '/remove/' + inputCode,
 	        dataType: 'json',
-	        type: 'POST',
-	        data: JSON.stringify({
-	          "remove-record": inputCode
-	        }),
+	        type: 'GET',
+	        // data: JSON.stringify({
+	        //   "remove-record": inputCode
+	        // }),
 	        success: function (data) {
 	          console.log(data);
-	          // this.setState({result: data.result, status: "Delete record success"});
+	          this.props.onRemoveRecord({ result: "todo", status: "success" });
+	          // alert("Remove success!");
 	        }.bind(this),
 	        error: function (xhr, status, err) {
 	          console.error(URL, status, err.toString());
-	          // this.setState({result: "Item not deleted.", status: "failure"});
+	          // alert("Remove failed!");
+	          this.props.onRemoveRecord({ result: "todo", status: "failed" });
 	        }.bind(this)
 	      });
 	    }
@@ -22483,8 +22494,8 @@
 	// if last one is own, then all properties are own
 	for(key in obj){}return key===undefined||hasOwn.call(obj,key);},isEmptyObject:function isEmptyObject(obj){var name;for(name in obj){return false;}return true;},type:function type(obj){if(obj==null){return obj+"";} // Support: Android<4.0, iOS<6 (functionish RegExp)
 	return (typeof obj==="undefined"?"undefined":_typeof(obj))==="object"||typeof obj==="function"?class2type[toString.call(obj)]||"object":typeof obj==="undefined"?"undefined":_typeof(obj);}, // Evaluates a script in a global context
-	globalEval:function globalEval(code){var script,indirect=eval;code=jQuery.trim(code);if(code){ // If the record_code includes a valid, prologue position
-	// strict mode pragma, execute record_code by injecting a
+	globalEval:function globalEval(code){var script,indirect=eval;code=jQuery.trim(code);if(code){ // If the code includes a valid, prologue position
+	// strict mode pragma, execute code by injecting a
 	// script tag into the document.
 	if(code.indexOf("use strict")===1){script=document.createElement("script");script.text=code;document.head.appendChild(script).parentNode.removeChild(script);}else { // Otherwise, avoid the DOM node creation, insertion
 	// and removal by using an indirect global eval
@@ -22508,7 +22519,7 @@
 	args=_slice.call(arguments,2);proxy=function proxy(){return fn.apply(context||this,args.concat(_slice.call(arguments)));}; // Set the guid of unique handler to the same of original handler, so it can be removed
 	proxy.guid=fn.guid=fn.guid||jQuery.guid++;return proxy;},now:Date.now, // jQuery.support is not used in Core but other projects attach their
 	// properties to it so it needs to exist.
-	support:support}); // JSHint would error on this record_code due to the Symbol not being defined in ES5.
+	support:support}); // JSHint would error on this code due to the Symbol not being defined in ES5.
 	// Defining this global in .jshintrc would create a danger of using the global
 	// unguarded in another place, it seems safer to just disable JSHint for these
 	// three lines.
@@ -23139,7 +23150,7 @@
 	//	2. Improve the module's maintainability by reducing the storage
 	//		paths to a single mechanism.
 	//	3. Use the same single mechanism to support "private" and "user" data.
-	//	4. _Never_ expose "private" data to user record_code (TODO: Drop _data, _removeData)
+	//	4. _Never_ expose "private" data to user code (TODO: Drop _data, _removeData)
 	//	5. Avoid exposing implementation details on user objects (eg. expando properties)
 	//	6. Provide a clear path for implementation upgrade to WeakMap in 2014
 	var rbrace=/^(?:\{[\w\W]*\}|\[[\w\W]*\])$/,rmultiDash=/[A-Z]/g;function dataAttr(elem,key,data){var name; // If nothing was found internally, try to fetch any
@@ -23849,7 +23860,7 @@
 	for(prefix in a){buildParams(prefix,a[prefix],traditional,add);}} // Return the resulting serialization
 	return s.join("&").replace(r20,"+");};jQuery.fn.extend({serialize:function serialize(){return jQuery.param(this.serializeArray());},serializeArray:function serializeArray(){return this.map(function(){ // Can add propHook for "elements" to filter or add form elements
 	var elements=jQuery.prop(this,"elements");return elements?jQuery.makeArray(elements):this;}).filter(function(){var type=this.type; // Use .is( ":disabled" ) so that fieldset[disabled] works
-	return this.name&&!jQuery(this).is(":disabled")&&rsubmittable.test(this.nodeName)&&!rsubmitterTypes.test(type)&&(this.checked||!rcheckableType.test(type));}).map(function(i,elem){var val=jQuery(this).val();return val==null?null:jQuery.isArray(val)?jQuery.map(val,function(val){return {name:elem.name,value:val.replace(rCRLF,"\r\n")};}):{name:elem.name,value:val.replace(rCRLF,"\r\n")};}).get();}});jQuery.ajaxSettings.xhr=function(){try{return new window.XMLHttpRequest();}catch(e){}};var xhrSuccessStatus={ // File protocol always yields status record_code 0, assume 200
+	return this.name&&!jQuery(this).is(":disabled")&&rsubmittable.test(this.nodeName)&&!rsubmitterTypes.test(type)&&(this.checked||!rcheckableType.test(type));}).map(function(i,elem){var val=jQuery(this).val();return val==null?null:jQuery.isArray(val)?jQuery.map(val,function(val){return {name:elem.name,value:val.replace(rCRLF,"\r\n")};}):{name:elem.name,value:val.replace(rCRLF,"\r\n")};}).get();}});jQuery.ajaxSettings.xhr=function(){try{return new window.XMLHttpRequest();}catch(e){}};var xhrSuccessStatus={ // File protocol always yields status code 0, assume 200
 	0:200, // Support: IE9
 	// #1450: sometimes IE returns 1223 when it should be 204
 	1223:204},xhrSupported=jQuery.ajaxSettings.xhr();support.cors=!!xhrSupported&&"withCredentials" in xhrSupported;support.ajax=xhrSupported=!!xhrSupported;jQuery.ajaxTransport(function(options){var _callback,errorCallback; // Cross domain only allowed if supported through XMLHttpRequest

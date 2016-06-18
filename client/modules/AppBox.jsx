@@ -2,14 +2,12 @@
  * Created by fengchaoyi on 16/6/5.
  */
 import React from "react";
-
-import GetRecordForm from './GetRecordForm.jsx';
-import SaveRecordForm from './SaveRecordForm.jsx';
-import ResultBox from './ResultBox.jsx';
-
-import Panel from 'react-bootstrap/lib/Panel';
+import GetRecordForm from "./GetRecordForm.jsx";
+import SaveRecordForm from "./SaveRecordForm.jsx";
+import ResultBox from "./ResultBox.jsx";
+import Panel from "react-bootstrap/lib/Panel";
 import * as $ from "../js/jquery-2.2.4";
-import Consts from "./Consts"
+import Consts from "./Consts";
 
 class AppBox extends React.Component {
   constructor(props) {
@@ -20,6 +18,7 @@ class AppBox extends React.Component {
     };
     this.handleGetRecordFormSubmit = this.handleGetRecordFormSubmit.bind(this);
     this.handleSaveRecordFormSubmit = this.handleSaveRecordFormSubmit.bind(this);
+    this.onRemoveRecord = this.onRemoveRecord.bind(this);
 
     this.URL = Consts.URL;
   }
@@ -66,12 +65,18 @@ class AppBox extends React.Component {
     return (
       <Panel className="appBox">
         <SaveRecordForm onInputSubmit={this.handleSaveRecordFormSubmit}/>
-        <GetRecordForm onInputSubmit={this.handleGetRecordFormSubmit}/>
+        <GetRecordForm onInputSubmit={this.handleGetRecordFormSubmit} onRemoveRecord={this.onRemoveRecord}/>
         <ResultBox data={this.state}/>
       </Panel>
     );
   }
 
+  onRemoveRecord(remove_result_obj) {
+    this.setState({
+      result: remove_result_obj.result,
+      status: remove_result_obj.status
+    });
+  }
 }
 
 export default AppBox;
