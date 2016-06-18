@@ -13,3 +13,13 @@ Temporarily, we use "nodemon" to run the server scripts.
 
 + Please make sure you have mongodb installed and running, then run "npm install" to install the npm dependencies, then "npm start" to run the server program.
 + Then use any browser to open "client/index.html" to open the client-side page and use copier. (may be changed later)
+
+##Server Rest API
+
+POST /record:   Save a record and get a short code	
+GET /record/:code:  Get the record by the code
+ 
+##TODO:
+
++ Add "remove a record" function
++ Add support for little files

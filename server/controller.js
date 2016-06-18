@@ -9,7 +9,14 @@ var util = require('util');
 
 //mongodb
 var connection_string = 'mongodb://127.0.0.1:27017/test';
-var db = mongoose.connect(connection_string, ['test']);
+var options = {};
+var db = mongoose.connect(connection_string, options, function(error){
+  if (error){
+    console.log(error);
+    throw "mongodb connect failed, please check.";
+  }
+});
+
 autoIncrement.initialize(db);
 
 
@@ -32,30 +39,16 @@ module.exports.createRecord = function (req, res, next) {
   var recordObject = new Record({
     record: record,
     date: new Date(),
-    someid: generateSomeId(),
+    someid: generateSomeId()
   });
   recordObject.save(function (error, object) {
     if (error) {
       console.log(error);
-      res.status(500).send({'result': "error", 'status': 'failure'});
+      res.send({'result': "error", 'status': 'failure'});
     }
     console.log("saved");
     //res.send({'result': calculateShortCodeFromId(object.recordId), 'status': 'success'});
     res.send({'result': object.someid, 'status': 'success'});
-  });
-  return next();
-};
-
-// list all records
-module.exports.listRecord = function (req, res, next) {
-  Record.find({}, function (error, result) {
-    if (error) {
-      console.log(error);
-      return res.status(500).send();
-    } else {
-      console.log(result);
-      return res.send({'result': result});
-    }
   });
   return next();
 };
@@ -67,63 +60,64 @@ module.exports.getRecord = function (req, res, next) {
   Record.find({someid: req.params.shortCode}, function (error, record) {
     if (error) {
       console.log(error);
-      res.status(500).send({'result': "error", 'status': 'failure'});
+      res.send({'result': "error", 'status': 'failure'});
     } else {
-      if (record.length>0){
+      if (record.length > 0) {
         console.log(record);
-        return res.send({'result': record[0].record, 'status': 'success'});
-      }else{
-        res.status(500).send({'result': "Item not found!", 'status': 'failure'});
+        res.send({'result': record[0].record, 'status': 'success'});
+      } else {
+        res.send({'result': "Item not found!", 'status': 'failure'});
       }
     }
   });
+  return next();
 };
 
 
-
-var CodeLength=6;
+var CodeLength = 3;
 var idset = new Set();
 
-var generate = function(){
-    var fresh=uuid.v4();
-    var n=fresh.length;
-    var begin=n-CodeLength;
-    var end=n;
-    return fresh.substring(begin,end);
+var generate = function () {
+  var fresh = uuid.v4();
+  var n = fresh.length;
+  var begin = n - CodeLength;
+  return fresh.substring(begin, n);
 };
 
 
-var generateSomeId = function(){
-    var fresh;
-    var attempted=0;
-    while (true){
-        fresh=generate();
-        attempted+=1;
-        if (!idset.has(fresh)) break;
-        if (attempted==100) throw "Collided 100 times!";
+var generateSomeId = function () {
+  var fresh;
+  var attempted = 0;
+  while (true) {
+    fresh = generate();
+    attempted += 1;
+    if (!idset.has(fresh)) break;
+    if (attempted == 100) throw "Collided 100 times!";
+  }
+  idset.add(fresh);
+  return fresh;
+
+};
+
+
+var init = function () {
+  var query = Record.find({}).select("someid");
+
+  return query.exec().onResolve(function (err, ids) {
+    if (err) throw "Failed to fetch data from database...Please check mongodb";
+    console.log("Init data for idset arrived.");
+    console.log(util.format("#Entries=%d", ids.length));
+    for (var id in ids) {
+      idset.add(id);
     }
-    idset.add(fresh);
-    return fresh;
-    
-};
+  });
 
-
-var init = function(){
-    var query=Record.find({}).select("someid");
-    return query.exec().addBack(function(err,ids){
-        if (err) throw "Failed to fetch data from database...";
-        console.log("Init data for idset arrived.");
-        console.log(util.format("#Entries=%d", ids.length));
-        for(var id in ids){
-            idset.add(id);
-        }
-    });
 };
 
 
 module.exports.init = init;
 
-function generateRandomCode(){
-  //TODO: generate a no-collision random 4-character length code
+function generateRandomCode() {
+  //TODO: generate a no-collision random 4-character length record_code
   return uuid.v4();
 }

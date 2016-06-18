@@ -22,7 +22,6 @@ server.listen(port, ip_addr, function () {
 var Controller = require('./controller');
 
 Controller.init().then(function(){
-    server.get('/record', Controller.listRecord);
     server.get('/record/:shortCode', Controller.getRecord);
     server.post('/record', Controller.createRecord);
 });

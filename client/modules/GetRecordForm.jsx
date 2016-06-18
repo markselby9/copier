@@ -7,7 +7,7 @@ class GetRecordForm extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = {code:""};
+    this.state = {record_code:""};
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.removeCode = this.removeCode.bind(this);
@@ -15,22 +15,23 @@ class GetRecordForm extends React.Component {
 
   handleSubmit(e) {
     e.preventDefault();
-    var inputCode = this.state.code;
+    console.log(this.state);
+    var inputCode = this.state.record_code;
     if (!inputCode) {
-      alert("Don't submit empty code");
+      alert("Don't submit empty record_code");
       return;
     }
     this.props.onInputSubmit({input: inputCode});
   }
 
-  handleChange(newValue){
-    this.setState({code: newValue});
+  handleChange(event){
+    this.setState({record_code: event.target.value});
   }
 
   removeCode() {
-    var inputCode = this.state.code;
+    var inputCode = this.state.record_code;
     if (!inputCode) {
-      alert("Don't submit empty code");
+      alert("Don't submit empty record_code");
       return;
     }
     // this.refs.inputRecord.value = '';
@@ -57,7 +58,7 @@ class GetRecordForm extends React.Component {
     return (
       <form className="getRecordForm" onSubmit={this.handleSubmit}>
         <p>Paste your short code here to get the content: </p>
-        <input type="text" placeholder="record number" onChange={this.handleChange.bind(this)} />
+        <input type="text" placeholder="record number" value={this.state.record_code} onChange={this.handleChange} />
         <Button type="submit" bsStyle="primary" className="buttonGroup">Get my content!</Button>
         <Button bsStyle="danger" onClick={this.removeCode} className="buttonGroup">Remove it for privacy</Button>
       </form>
