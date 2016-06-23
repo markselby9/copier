@@ -10,6 +10,7 @@ var config = {
     path: BUILD_DIR,
     filename: 'bundle.js'
   },
+  devtool: 'inline-source-map',
   module : {
     loaders : [
       {

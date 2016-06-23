@@ -44,13 +44,13 @@ class GetRecordForm extends React.Component {
         // }),
         success: function (data) {
           console.log(data);
-          this.props.onRemoveRecord({result:"todo", status:"success"});
+          this.props.onRemoveRecord({result:data.result, status:data.status});
           // alert("Remove success!");
         }.bind(this),
         error: function (xhr, status, err) {
           console.error(URL, status, err.toString());
           // alert("Remove failed!");
-          this.props.onRemoveRecord({result:"todo", status:"failed"});
+          this.props.onRemoveRecord({result:"failure", status:err.toString()});
         }.bind(this)
       }
     )

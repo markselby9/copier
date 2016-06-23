@@ -75,7 +75,27 @@ module.exports.getRecord = function (req, res, next) {
 
 module.exports.removeRecord = function (req, res, next) {
   var shortCode = req.params.shortCode;
-  
+  Record.find({someid: shortCode}, function(error, record){
+    if (error){
+      console.log(error);
+      res.send({'result': "error", 'status': 'failure'});
+      return next();
+    }
+    else if (record.length == 0) {
+      res.send({'result': "Item not found!", 'status': 'failure'});
+      return next();
+    }
+    else{
+      Record.remove({someid: shortCode}, function(err){
+        if (!err){
+          res.send({result:"Deleted!", status:"success"});
+        }else{
+          res.send({result:"error", status:"failure"});
+        }
+      });
+      return next();
+    }
+  });
 };
 
 
